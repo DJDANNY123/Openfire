@@ -259,11 +259,21 @@
             <version>${standard-taglib.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.taglibs</groupId>
-            <artifactId>taglibs-standard-spec</artifactId>
-            <version>${standard-taglib.version}</version>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>glassfish-jstl</artifactId>
+            <version>${jetty.version}</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>javax.servlet.jsp</groupId>-->
+<!--            <artifactId>jsp-api</artifactId>-->
+<!--            <version>2.1</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>2.0.0</version>
+        </dependency>
         <!-- Apache MINA -->
         <dependency>
             <groupId>org.apache.mina</groupId>

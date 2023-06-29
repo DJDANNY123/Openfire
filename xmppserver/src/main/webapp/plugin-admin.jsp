@@ -15,13 +15,7 @@
   - limitations under the License.
 --%>
 
-<%@ page import="java.io.InputStream,
-                 java.util.List,
-                 org.apache.commons.fileupload.FileItem,
-                 org.apache.commons.fileupload.FileItemFactory,
-                 org.apache.commons.fileupload.FileUploadException,
-                 org.apache.commons.fileupload.disk.DiskFileItemFactory,
-                 org.apache.commons.fileupload.servlet.ServletFileUpload"
+<%@ page import="java.io.InputStream"
         %>
 <%@ page import="org.jivesoftware.openfire.XMPPServer" %>
 <%@ page import="org.jivesoftware.openfire.container.PluginManager" %>
@@ -29,6 +23,7 @@
 <%@ page import="org.slf4j.Logger" %>
 <%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page import="org.jivesoftware.util.*" %>
+<%@ page import="java.util.Collection" %>
 
 <%@ taglib uri="admin" prefix="admin" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -99,21 +94,13 @@
     if (csrf_check && uploadEnabled && uploadPlugin) {
         boolean installed = false;
 
-        // Create a factory for disk-based file items
-        FileItemFactory factory = new DiskFileItemFactory();
-
-        // Create a new file upload handler
-        ServletFileUpload upload = new ServletFileUpload(factory);
-        // I'm not sure that the file count can exceed 1, but limiting is good practice under CVE-2023-24998
-        upload.setFileCountMax(20);
-
         try {
             // Parse the request
-            List<FileItem> items = upload.parseRequest(request);
+            Collection<Part> parts = request.getParts();
 
-            for (FileItem item : items) {
-                String fileName = item.getName();
-                String contentType = item.getContentType();
+            for (Part part : parts) {
+                String fileName = part.getName();
+                String contentType = part.getContentType();
                 Log.debug("Uploaded plugin '{}' content type: '{}'.", fileName, contentType );
                 if (fileName == null) {
                     Log.error( "Ignoring uploaded file: No filename specified for file upload." );
@@ -125,7 +112,7 @@
                     continue;
                 }
 
-                InputStream is = item.getInputStream();
+                InputStream is = part.getInputStream();
                 if (is != null) {
                     installed = XMPPServer.getInstance().getPluginManager().installPlugin(is, fileName);
                     if (!installed) {
@@ -140,7 +127,7 @@
                 }
             }
         }
-        catch (FileUploadException e) {
+        catch (Exception e) {
             Log.error("Unable to upload plugin file.", e);
         }
         if (installed) {

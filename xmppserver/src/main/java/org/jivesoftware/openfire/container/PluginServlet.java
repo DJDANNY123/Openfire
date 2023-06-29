@@ -42,17 +42,17 @@ import org.jivesoftware.util.WebXmlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterConfig;
-import javax.servlet.GenericServlet;
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.GenericServlet;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * The plugin servlet acts as a proxy for web requests (in the admin console)
@@ -200,7 +200,7 @@ public class PluginServlet extends HttpServlet {
 
                     final Object instance = theClass.newInstance();
                     if (!(instance instanceof GenericServlet)) {
-                        Log.warn("Could not load servlet '{}' of plugin '{}'. Its class ({}) is not an instance of javax.servlet.GenericServlet.", servletName, pluginName, className);
+                        Log.warn("Could not load servlet '{}' of plugin '{}'. Its class ({}) is not an instance of jakarta.servlet.GenericServlet.", servletName, pluginName, className);
                         continue;
                     }
 
@@ -266,7 +266,7 @@ public class PluginServlet extends HttpServlet {
                 final Object instance = theClass.newInstance();
                 if ( !(instance instanceof Filter) )
                 {
-                    Log.warn( "Could not load filter '{}' of plugin '{}'. Its class ({}) is not an instance of javax.servlet.Filter.", filterName, pluginName, className );
+                    Log.warn( "Could not load filter '{}' of plugin '{}'. Its class ({}) is not an instance of jakarta.servlet.Filter.", filterName, pluginName, className );
                     continue;
                 }
 
